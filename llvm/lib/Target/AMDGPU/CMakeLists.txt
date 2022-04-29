@@ -222,7 +222,7 @@ target_include_directories(LLVMAMDGPUCodeGen
 
 
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -save-temps -fgpu-rdc")
-target_link_options(LLVMAMDGPUCodeGen PUBLIC -fgpu-rdc --hip-link)
+target_link_options(LLVMAMDGPUCodeGen PRIVATE -fgpu-rdc --hip-link)
 target_link_libraries(LLVMAMDGPUCodeGen PRIVATE ${HIP_LIBRARIES})
 
 set(OPTSCHED_TARGET_DEPS ${OPTSCHED_SOURCE_DIR}/include ${OPTSCHED_SOURCE_DIR}/lib)
