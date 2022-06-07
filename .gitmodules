@@ -1,0 +1,3 @@
+[submodule "llvm/lib/Target/AMDGPU/OptSched"]
+	path = llvm/lib/Target/AMDGPU/OptSched
+	url = https://github.com/CSUS-LLVM/OptSched
