@@ -609,7 +609,7 @@ bool AMDGPUAsmPrinter::runOnMachineFunction(MachineFunction &MF) {
 
   auto Occ = std::min(OccVGPRs, std::min(OccSGPRs, OccLDS));
   dbgs() << "Final occupancy for function " << MF.getName() << ":" << Occ << "\n";
-  
+
   return false;
 }
 

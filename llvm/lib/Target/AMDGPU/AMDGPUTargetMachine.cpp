@@ -816,6 +816,12 @@ public:
   ScheduleDAGInstrs *
   createMachineScheduler(MachineSchedContext *C) const override;
 
+  ScheduleDAGInstrs *
+  createAMDScheduler(MachineSchedContext *C) const override;
+
+  ScheduleDAGInstrs *
+  createOptSchedScheduler(MachineSchedContext *C) const override;
+
   bool addPreISel() override;
   void addMachineSSAOptimization() override;
   bool addILPOpts() override;
@@ -1046,6 +1052,16 @@ ScheduleDAGInstrs *GCNPassConfig::createMachineScheduler(
   if (UseOptSched)
     return createOptSchedGCN(C);
   return createGCNMaxOccupancyMachineScheduler(C);
+}
+
+ScheduleDAGInstrs *GCNPassConfig::createAMDScheduler(
+  MachineSchedContext *C) const {
+  return createGCNMaxOccupancyMachineScheduler(C);
+}
+
+ScheduleDAGInstrs *GCNPassConfig::createOptSchedScheduler(
+  MachineSchedContext *C) const {
+  return createOptSchedGCN(C);
 }
 
 bool GCNPassConfig::addPreISel() {
