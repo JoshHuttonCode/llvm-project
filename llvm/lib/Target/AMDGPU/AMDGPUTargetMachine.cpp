@@ -1195,17 +1195,17 @@ void GCNPassConfig::addFastRegAlloc() {
 void GCNPassConfig::addOptimizedRegAlloc() {
   // Allow the scheduler to run before SIWholeQuadMode inserts exec manipulation
   // instructions that cause scheduling barriers.
-  insertPass(&MachineSchedulerID, &SIWholeQuadModeID);
-  insertPass(&MachineSchedulerID, &SIPreAllocateWWMRegsID);
+  insertPass(&MachineSchedulerOptSchedID, &SIWholeQuadModeID);
+  insertPass(&MachineSchedulerOptSchedID, &SIPreAllocateWWMRegsID);
 
   if (OptExecMaskPreRA)
-    insertPass(&MachineSchedulerID, &SIOptimizeExecMaskingPreRAID);
+    insertPass(&MachineSchedulerOptSchedID, &SIOptimizeExecMaskingPreRAID);
 
   if (EnablePreRAOptimizations.getNumOccurrences()
           ? EnablePreRAOptimizations
           : TM->getOptLevel() > CodeGenOpt::Less)
     insertPass(&RenameIndependentSubregsID, &GCNPreRAOptimizationsID);
-  insertPass(&MachineSchedulerID, &SIFormMemoryClausesID);
+  insertPass(&MachineSchedulerOptSchedID, &SIFormMemoryClausesID);
 
   // This must be run immediately after phi elimination and before
   // TwoAddressInstructions, otherwise the processing of the tied operand of
