@@ -107,6 +107,10 @@ static cl::opt<unsigned> MISchedCutoff("misched-cutoff", cl::Hidden,
 
 static cl::opt<std::string> SchedOnlyFunc("misched-only-func", cl::Hidden,
   cl::desc("Only schedule this function"));
+static cl::list<std::string> SchedOnlyFuncList("misched-only-func-list",
+  cl::desc("Comma separated list of functions to not schedule"),
+  cl::CommaSeparated, cl::ValueRequired,
+  cl::Hidden);
 static cl::opt<unsigned> SchedOnlyBlock("misched-only-block", cl::Hidden,
                                         cl::desc("Only schedule this MBB#"));
 static cl::opt<bool> PrintDAGs("misched-print-dags", cl::Hidden,
@@ -653,6 +657,9 @@ void MachineSchedulerBase::scheduleRegions(ScheduleDAGInstrs &Scheduler,
 
     Scheduler.startBlock(&*MBB);
 
+    // skip functions not in the SchedOnlyFuncList
+    if (!llvm::empty(SchedOnlyFuncList) && !llvm::is_contained(SchedOnlyFuncList, MF->getName()))
+      continue;
 #ifndef NDEBUG
     if (SchedOnlyFunc.getNumOccurrences() && SchedOnlyFunc != MF->getName())
       continue;
