@@ -21,7 +21,15 @@ using namespace llvm;
 GCNMaxOccupancySchedStrategy::GCNMaxOccupancySchedStrategy(
     const MachineSchedContext *C) :
     GenericScheduler(C), TargetOccupancy(0), HasClusteredNodes(false),
-    HasExcessPressure(false), MF(nullptr) { }
+    HasExcessPressure(false), MF(nullptr) {
+      SIMachineFunctionInfo *MFI;
+      MFI =
+        const_cast<SIMachineFunctionInfo *>(C->MF->getInfo<SIMachineFunctionInfo>());
+      MFI->setInitialOccupancy();
+      #ifdef DEBUG_RESET_OCCUPANCY
+        printf("Occ before AMD: %d\n", MFI->getOccupancy());
+      #endif
+    }
 
 void GCNMaxOccupancySchedStrategy::initialize(ScheduleDAGMI *DAG) {
   GenericScheduler::initialize(DAG);
